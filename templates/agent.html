@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Company AI Agent</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #222;
+        }
+
+        .header p {
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .chat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .button-container {
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        button {
+            padding: 11px 25px;
+            border: none;
+            border-radius: 7px;
+            background: #222;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .answer {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .answer h3 {
+            margin-top: 0;
+        }
+
+        .tools {
+            margin-top: 20px;
+        }
+
+        .tool {
+            display: inline-block;
+            padding: 6px 10px;
+            margin-right: 6px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .sources {
+            margin-top: 20px;
+        }
+
+        .source {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Intelligent Knowledge Assistant</h1>
+        <p>
+            Get instant answers from company knowledge, employee information,
+            latest news, weather updates, and the web.
+        </p>
+    </div>
+
+    <div class="chat-card">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <textarea
+                name="question"
+                placeholder="Ask your question..."
+                required
+            ></textarea>
+
+            <div class="button-container">
+                <button type="submit">
+                    Ask Agent
+                </button>
+            </div>
+        </form>
+
+
+        {% if answer %}
+
+        <div class="answer">
+
+            <h3>AI Answer</h3>
+
+            <p>
+                {{ answer|linebreaksbr }}
+            </p>
+
+        </div>
+
+
+        {% if tools %}
+
+        <div class="tools">
+
+            <h3>Tools Used</h3>
+
+            {% for tool in tools %}
+                <span class="tool">
+                    {{ tool }}
+                </span>
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% if sources %}
+
+        <div class="sources">
+
+            <h3>Sources</h3>
+
+            {% for source in sources %}
+
+                <div class="source">
+
+                    <strong>
+                        {{ source.document }}
+                    </strong>
+
+                    <br>
+
+                    Page: {{ source.page }}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+

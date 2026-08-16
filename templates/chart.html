@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Knowledge Assistant</title>
+</head>
+
+<body>
+
+    <h1>AI Knowledge Assistant</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <textarea
+            name="question"
+            rows="4"
+            cols="60"
+            placeholder="Ask a question..."
+        >{{ question }}</textarea>
+
+        <br><br>
+
+        <button type="submit">Ask</button>
+    </form>
+
+    {% if answer %}
+
+        <hr>
+
+        <h3>Answer</h3>
+
+        <p>
+            {{ answer }}
+        </p>
+
+        <h3>Sources</h3>
+
+        {% for source in sources %}
+            <p>
+                {{ source.document }}
+                -
+                Page {{ source.page }}
+                -
+                Score {{ source.score|floatformat:4 }}
+            </p>
+        {% endfor %}
+
+    {% endif %}
+
+</body>
+</html>
+
