@@ -268,3 +268,122 @@ def web_search(query: str):
         return {
             "error": f"Web search failed: {str(e)}"
         }
+        
+    
+
+def get_contact_number(name: str):
+    """
+    Find a contact's mobile number by name.
+    """
+    
+    CONTACTS = {
+        "Rahul Kumar": "9876543210",
+        "Amit Sharma": "9123456780",
+        "Priya Singh": "9988776655",
+        "Rohan Verma": "9012345678",
+        "Neha Gupta": "9234567890",
+        "Ankit Kumar": "9345678901",
+        "Pooja Sharma": "9456789012",
+        "Raj Singh": "9567890123",
+        "Sneha Kumari": "9678901234",
+        "Aman Yadav": "9789012345",
+        "Rohit Kumar": "9890123456",
+        "Anjali Singh": "9901234567",
+        "Vikas Sharma": "9812345678",
+        "Simran Gupta": "9723456789",
+        "Nikhil Verma": "9634567890",
+        "Kavya Kumari": "9545678901",
+        "Abhishek Singh": "9456789012",
+        "Riya Sharma": "9367890123",
+        "Manish Kumar": "9278901234",
+        "Sakshi Gupta": "9189012345",
+        "Simran": "9827325191",
+    }
+
+    number = CONTACTS.get(name)
+
+    if not number:
+        return {
+            "found": False,
+            "message": f"No contact found for {name}"
+        }
+
+    return {
+        "found": True,
+        "name": name,
+        "mobile": number,
+    }
+    
+    
+
+from urllib.parse import quote
+
+def open_whatsapp(name: str, mobile: str):
+    """
+    Open WhatsApp Web for the given contact.
+    """
+
+    if not name:
+        return {
+            "success": False,
+            "message": "Name is required."
+        }
+
+    if not mobile:
+        return {
+            "success": False,
+            "message": "Mobile number is required."
+        }
+
+    # Remove spaces, +, -, etc.
+    mobile = "".join(filter(str.isdigit, mobile))
+
+    # Add India country code if 10-digit number
+    if len(mobile) == 10:
+        whatsapp_number = f"91{mobile}"
+    else:
+        whatsapp_number = mobile
+
+    whatsapp_url = (
+        f"https://web.whatsapp.com/send?phone={whatsapp_number}"
+    )
+
+    return {
+        "success": True,
+        "name": name,
+        "mobile": mobile,
+        "whatsapp_url": whatsapp_url,
+        "message": f"WhatsApp opened for {name}."
+    }
+    
+    
+from langchain_openai import ChatOpenAI
+from django.conf import settings
+
+
+def ask_llm(question: str):
+    """
+    Ask the LLM directly for a general question.
+    Use this when no specific tool is required.
+    """
+
+    if not question:
+        return {
+            "success": False,
+            "message": "Please provide a question."
+        }
+
+    llm = ChatOpenAI(
+        base_url="https://integrate.api.nvidia.com/v1",
+        api_key=settings.NVIDIA_API_KEY,
+        model="openai/gpt-oss-20b",
+        temperature=0.2,
+    )
+
+    response = llm.invoke(question)
+
+    return {
+        "success": True,
+        "question": question,
+        "answer": response.content,
+    }

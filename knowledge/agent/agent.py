@@ -9,6 +9,9 @@ from .tools import (
     get_today_news,
     web_search,
     get_weather,
+    get_contact_number,
+    open_whatsapp,
+    ask_llm,
 )
 
 
@@ -25,6 +28,9 @@ tools = [
     get_today_news,
     web_search,
     get_weather,
+    get_contact_number,
+    open_whatsapp,
+    ask_llm,
 ]
 
 llm_with_tools = llm.bind_tools(tools)
@@ -35,6 +41,9 @@ tool_map = {
     "get_today_news": get_today_news,
     "web_search": web_search,
     "get_weather": get_weather,
+    "get_contact_number": get_contact_number,
+    "open_whatsapp": open_whatsapp,
+    "ask_llm": ask_llm,
 }
 
 
@@ -91,6 +100,7 @@ def run_agent(question):
         "tools": used_tools,
         "sources": sources,
     }
+
 
 
 
